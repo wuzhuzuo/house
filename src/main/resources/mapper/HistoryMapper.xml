@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.w.mapper.HistoryMapper">
+    <resultMap id="BaseResultMap" type="com.w.entity.History">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+        <result column="house_id" jdbcType="INTEGER" property="houseId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="browse_count" jdbcType="INTEGER" property="browseCount"/>
+        <result column="bus_id" jdbcType="INTEGER" property="busId"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, open_id, house_id, create_time,browse_count,bus_id,phone
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from history
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from history
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insertSelective" parameterType="com.w.entity.History">
+        insert into history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="openId != null">
+                open_id,
+            </if>
+            <if test="houseId != null">
+                house_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="busId != null">
+                bus_id,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="openId != null">
+                #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="houseId != null">
+                #{houseId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="busId != null">
+                #{busId,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.w.entity.History">
+        update history
+        <set>
+            <if test="openId != null">
+                open_id = #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="houseId != null">
+                house_id = #{houseId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="busId != null">
+                bus_id = #{busId,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByOpenId" parameterType="com.w.entity.History" resultMap="BaseResultMap">
+    select a.* from history a inner join house b on a.house_id=b.id where a.open_id=#{openId} and b.isdel=1 order by a.create_time desc
+  </select>
+    <select id="selectByOpenIdAndHouseId" parameterType="com.w.entity.History" resultMap="BaseResultMap">
+        select * from history where house_id=#{houseId}
+        <if test="openId !=null and openId !=''">
+            and open_id=#{openId}
+        </if>
+    </select>
+    <update id="updateByCreateTime" parameterType="com.w.entity.History">
+        update history set create_time =#{createTime} ,browse_count=browse_count+1
+        where house_id=#{houseId}
+        <if test="openId !=null and openId !=''">
+            and open_id=#{openId}
+        </if>
+    </update>
+    <!--统计该商户下房源浏览历史记录的数量-->
+    <select id="selectBySum" resultType="java.lang.Integer">
+        select sum(browse_count) as browseCount from history where bus_id=#{busId}
+    </select>
+
+    <!--统计该商户下房源浏览历史记录的数量-->
+    <select id="selectByCount" resultType="java.lang.Integer">
+        select count(distinct phone) as browseCount from history where bus_id=#{busId}
+    </select>
+
+
+    <!--统计该房源浏览历史记录的数量-->
+    <select id="selectByRecordCount" resultType="java.lang.Integer">
+        select sum(browse_count) as browseCount from history where house_id=#{houseId}
+    </select>
+
+    <!--统计用户浏览该商户下的历史记录的数量-->
+    <select id="selectByUserAndRecordCount" resultType="java.lang.Integer">
+        select sum(browse_count) as browseCount from history where bus_id=#{busId} and phone=#{phone}
+    </select>
+
+    <!--统计该商户下浏览用户的信息-->
+    <select id="selectByUserList" resultType="java.lang.String">
+        select distinct(phone)from (select phone from history where bus_id=#{busId} and phone <![CDATA[<>]]> "200" ORDER BY create_time desc) as tmp
+    </select>
+    <!--通过手机号和商家编号查询历史记录-->
+    <select id="selectByPhoneAndBusId" parameterType="com.w.entity.History" resultMap="BaseResultMap">
+        select * from history where phone=#{phone} and bus_id=#{busId}
+    </select>
+
+    <select id="selectByHouseHistoryId" parameterType="com.w.entity.History" resultMap="BaseResultMap">
+        select * from history where house_id=#{houseId}
+    </select>
+
+    <!--统计用户浏览该商家下的多少套房源-->
+    <select id="selectByUserPhoneAndBusId" resultType="java.lang.Integer">
+        select count(history.house_id) as houseId from history inner join house
+        on house.id=history.house_id where history.bus_id=#{busId} and history.phone=#{phone} and house.isdel=1
+     </select>
+    <!--查询用户浏览该房源多少次-->
+    <select id="selectByDetailCount" resultMap="BaseResultMap">
+        select * from history where house_id=#{houseId} and phone=#{phone}
+    </select>
+
+    <!--统计有多少用户浏览该经纪人下的房源-->
+    <select id="selectByUserAndAgent" resultType="java.lang.String">
+        SELECT DISTINCT
+        (phone)
+        FROM
+        (
+        SELECT
+        phone
+        FROM
+        history
+        INNER JOIN r_house ON history.house_id = r_house.house_id
+        WHERE
+        history.bus_id = #{busId}
+        AND history.phone <![CDATA[<>]]> "200"
+        AND r_house.agent_id = #{agentId}
+        ORDER BY
+        history.create_time DESC
+        ) AS tmp
+    </select>
+
+    <!--用户浏览该经济人下的房源的次数-->
+
+    <select id="selectByAgentAndUserSum" resultType="java.lang.Integer">
+         select sum(history.browse_count) as houseId  from history inner join house
+        on house.id=history.house_id
+			inner join r_house on  r_house.house_id=history.house_id	where history.bus_id=#{busId} and history.phone=#{phone} and r_house.agent_id=#{agentId}	and house.isdel=1
+    </select>
+    <!--查询用户浏览该经纪人下的哪些房源-->
+
+    <select id="selectByAgentAndUserAndHouse" resultMap="BaseResultMap">
+        select history.* from history inner join house
+        on house.id=history.house_id
+			inner join r_house on  r_house.house_id=history.house_id	where history.bus_id=#{busId} and history.phone=#{phone} and r_house.agent_id=#{agentId} and house.isdel=1
+    </select>
+
+    <!--统计该商户下的总浏览数-->
+    <select id="selectByBrowseCount" resultType="java.lang.Integer">
+         select sum(history.browse_count) from history inner join house
+        on house.id=history.house_id where history.bus_id=#{busId} and house.isdel=1
+    </select>
+    <!--统计经纪人的浏览总次数-->
+    <select id="selectBySumBrowseCount" resultType="java.lang.Integer">
+    select sum(history.browse_count) from history
+    inner join house on house.id=history.house_id
+    inner join r_house on r_house.house_id = history.house_id
+    where history.bus_id=#{busId} and r_house.agent_id=#{agentId} and house.isdel=1
+    </select>
+</mapper>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.w.mapper.CollectMapper">
+    <resultMap id="BaseResultMap" type="com.w.entity.Collect">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+        <result column="house_id" jdbcType="INTEGER" property="houseId"/>
+        <result column="follow_time" jdbcType="TIMESTAMP" property="followTime"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="bus_id" jdbcType="VARCHAR" property="busId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, open_id, house_id, follow_time, state,bus_id,phone
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from collect
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from collect
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insertSelective" parameterType="com.w.entity.Collect" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
+        insert into collect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="openId != null">
+                open_id,
+            </if>
+            <if test="houseId != null">
+                house_id,
+            </if>
+            <if test="followTime != null">
+                follow_time,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="busId != null">
+                bus_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="openId != null">
+                #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="houseId != null">
+                #{houseId,jdbcType=INTEGER},
+            </if>
+            <if test="followTime != null">
+                #{followTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="busId != null">
+                #{busId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.w.entity.Collect">
+        update collect
+        <set>
+            <if test="openId != null">
+                open_id = #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="houseId != null">
+                house_id = #{houseId,jdbcType=INTEGER},
+            </if>
+            <if test="followTime != null">
+                follow_time = #{followTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="busId != null">
+                bus_id = #{busId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.w.entity.Collect">
+    update collect
+    set open_id = #{openId,jdbcType=VARCHAR},
+      house_id = #{houseId,jdbcType=INTEGER},
+      follow_time = #{followTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectBystate" resultMap="BaseResultMap">
+  select * from user where open_id=#{opneId}
+</select>
+    <update id="updateByState" parameterType="com.w.entity.Collect">
+    update collect set
+    state=#{state},
+    open_id=#{openId},
+    follow_time=#{followTime},
+    bus_id=#{busId}
+     where phone =#{phone} and house_id=#{houseId}
+  </update>
+    <!--查看用户是否关注该房源-->
+    <select id="selectByCollectHouse" resultMap="BaseResultMap">
+    select * from collect where phone=#{phone} and house_id=#{houseId}
+  </select>
+
+
+    <!--  //统计该商户下有多少人关注了房源-->
+    <select id="selectByBusCount" resultType="java.lang.Integer">
+     select count(distinct collect.phone) as totalCount from collect inner join house on
+        house.id=collect.house_id where collect.bus_id=#{busId} and house.isdel=1 and collect.state=1
+   </select>
+    <!--  //查询该商户下有关注房源用户的信息-->
+    <select id="selectByUser" resultMap="BaseResultMap">
+    select collect.* from collect inner join house on
+       house.id=collect.house_id where collect.house_id=#{houseId} and collect.bus_id=#{busId} and house.isdel=1
+  </select>
+
+    <!--//统计该商户下关注用户的信息-->
+    <select id="selectByUserAndCollect" resultType="java.lang.String">
+        select distinct(phone) from collect inner join house on
+       house.id=collect.house_id where collect.bus_id=#{busId} and collect.phone=#{phone} and house.isdel=1
+    </select>
+    <!--//统计用户关注该商家下的房源-->
+    <select id="selectByUserCount" resultType="java.lang.Integer">
+       select count(*) from collect inner join house on
+       house.id=collect.house_id where collect.bus_id=#{busId} and collect.phone=#{phone} and house.isdel=1 and collect.state=1
+    </select>
+
+    <!--&lt;!&ndash;//查询商家下关注用户的信息&ndash;&gt;-->
+    <select id="selectByHouseCollect" resultMap="BaseResultMap" parameterType="com.w.entity.Collect">
+        select collect.* from collect inner join house on
+       house.id=collect.house_id where collect.bus_id=#{busId} and collect.phone=#{phone}
+       and house.isdel=1 and collect.state=1
+    </select>
+    <select id="selectByHouseCollectId" resultMap="BaseResultMap" parameterType="com.w.entity.Collect">
+        select * from collect where house_id=#{houseId}
+    </select>
+    <!--统计该房源被多少用户收藏-->
+    <select id="queryByHouseCollect" resultType="java.lang.Integer">
+        select count(house_id) as houseId from collect where house_id=#{houseId} and collect.state=1
+    </select>
+    <!--统计用户收藏了该经纪人下的房源-->
+
+    <select id="selectByAgentAndCollect" resultType="java.lang.Integer">
+        select count(collect.house_id) from collect inner join r_house on r_house.house_id= collect.house_id INNER JOIN house on collect.house_id=house.id
+        where r_house.bus_id=#{busId} and r_house.agent_id=#{agentId} and collect.phone=#{phone} and house.isdel=1
+    </select>
+</mapper>

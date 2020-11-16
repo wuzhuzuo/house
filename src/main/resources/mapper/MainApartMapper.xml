@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.w.mapper.MainApartMapper">
+    <resultMap id="BaseResultMap" type="com.w.entity.MainApart">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="house_id" jdbcType="INTEGER" property="houseId"/>
+        <result column="apart" jdbcType="VARCHAR" property="apart"/>
+        <result column="main_area" jdbcType="VARCHAR" property="mainArea"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.w.entity.MainApart">
+        <result column="pic_url" jdbcType="LONGVARCHAR" property="picUrl"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, house_id, apart, main_area,state
+  </sql>
+    <sql id="Blob_Column_List">
+    pic_url
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from main_apart
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByMainApart" parameterType="java.lang.Integer">
+    delete from main_apart
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.w.entity.MainApart">
+    insert into main_apart (id, house_id, apart,
+      main_area, pic_url,state)
+    values (#{id,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{apart,jdbcType=VARCHAR},
+      #{mainArea,jdbcType=VARCHAR}, #{picUrl,jdbcType=LONGVARCHAR},#{state,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertByMainApart" parameterType="com.w.entity.MainApart">
+        insert into main_apart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="houseId != null">
+                house_id,
+            </if>
+            <if test="apart != null">
+                apart,
+            </if>
+            <if test="mainArea != null">
+                main_area,
+            </if>
+            <if test="picUrl != null">
+                pic_url,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="houseId != null">
+                #{houseId,jdbcType=INTEGER},
+            </if>
+            <if test="apart != null">
+                #{apart,jdbcType=VARCHAR},
+            </if>
+            <if test="mainArea != null">
+                #{mainArea,jdbcType=VARCHAR},
+            </if>
+            <if test="picUrl != null">
+                #{picUrl,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.w.entity.MainApart">
+        update main_apart
+        <set>
+            <if test="houseId != null">
+                house_id = #{houseId,jdbcType=INTEGER},
+            </if>
+            <if test="apart != null">
+                apart = #{apart,jdbcType=VARCHAR},
+            </if>
+            <if test="mainArea != null">
+                main_area = #{mainArea,jdbcType=VARCHAR},
+            </if>
+            <if test="picUrl != null">
+                pic_url = #{picUrl,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByMainApartAndhouseId" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from main_apart where house_id= #{houseId}
+    </select>
+</mapper>

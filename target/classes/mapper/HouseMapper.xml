@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.w.mapper.HouseMapper">
+    <resultMap id="BaseResultMap" type="com.w.entity.House">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="price" jdbcType="VARCHAR" property="price"/>
+        <result column="max_floorarea" jdbcType="VARCHAR" property="maxFloorarea"/>
+        <result column="min_floorarea" jdbcType="VARCHAR" property="minFloorarea"/>
+        <result column="floor_area" jdbcType="VARCHAR" property="floorArea"/>
+        <result column="contact" jdbcType="VARCHAR" property="contact"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="open_time" jdbcType="DATE" property="openTime"/>
+        <result column="hand_time" jdbcType="DATE" property="handTime"/>
+        <result column="apart" jdbcType="VARCHAR" property="apart"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="tags" jdbcType="VARCHAR" property="tags"/>
+        <result column="total_price" jdbcType="VARCHAR" property="totalPrice"/>
+        <result column="direction" jdbcType="VARCHAR" property="direction"/>
+        <result column="house_year" jdbcType="VARCHAR" property="houseYear"/>
+        <result column="see_house" jdbcType="VARCHAR" property="seeHouse"/>
+        <result column="main_floor" jdbcType="VARCHAR" property="mainFloor"/>
+        <result column="actual_floor" jdbcType="VARCHAR" property="actualFloor"/>
+        <result column="renovation" jdbcType="VARCHAR" property="renovation"/>
+        <result column="pic_url" jdbcType="VARCHAR" property="picUrl"/>
+        <result column="pay_way" jdbcType="VARCHAR" property="payWay"/>
+        <result column="lease_way" jdbcType="VARCHAR" property="leaseWay"/>
+        <result column="quality" jdbcType="VARCHAR" property="quality"/>
+        <result column="isdel" jdbcType="INTEGER" property="isdel"/>
+        <result column="is_bus" jdbcType="INTEGER" property="isBus"/>
+        <result column="is_subway" jdbcType="INTEGER" property="isSubway"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="is_free" jdbcType="INTEGER" property="isFree"/>
+        <result column="is_park" jdbcType="INTEGER" property="isPark"/>
+        <result column="house_name" jdbcType="VARCHAR" property="houseName"/>
+        <result column="is_minprice" jdbcType="INTEGER" property="isMinprice"/>
+        <result column="is_mintotalprice" jdbcType="INTEGER" property="isMintotalprice"/>
+        <result column="is_home" jdbcType="INTEGER" property="isHome"/>
+        <result column="deploy" jdbcType="VARCHAR" property="deploy"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="floors" jdbcType="VARCHAR" property="floors"/>
+        <result column="is_recommend" jdbcType="INTEGER" property="isRecommend"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"></result>
+        <result column="apart_filter" jdbcType="INTEGER" property="apartFilter"></result>
+        <result column="total_price_filter" jdbcType="INTEGER" property="totalPriceFilter"></result>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, type, state, province, city, area, address, price, max_floorarea,
+    min_floorarea, floor_area, contact, phone, open_time, hand_time, apart, remark,
+    tags, total_price, direction, house_year, see_house, main_floor, actual_floor,
+    renovation, pic_url, pay_way, lease_way, quality, isdel, is_bus, is_subway, create_time,
+    is_free, is_park, house_name, is_minprice, is_mintotalprice, is_home,deploy,title,floors,is_recommend,update_time,apart_filter
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from house
+        where id = #{id,jdbcType=INTEGER} and isdel=1
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from house
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insertSelective" parameterType="com.w.entity.House" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
+        insert into house
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="area != null">
+                area,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="maxFloorarea != null">
+                max_floorarea,
+            </if>
+            <if test="minFloorarea != null">
+                min_floorarea,
+            </if>
+            <if test="floorArea != null">
+                floor_area,
+            </if>
+            <if test="contact != null">
+                contact,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="openTime != null">
+                open_time,
+            </if>
+            <if test="handTime != null">
+                hand_time,
+            </if>
+            <if test="apart != null">
+                apart,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="tags != null">
+                tags,
+            </if>
+            <if test="totalPrice != null">
+                total_price,
+            </if>
+            <if test="direction != null">
+                direction,
+            </if>
+            <if test="houseYear != null">
+                house_year,
+            </if>
+            <if test="seeHouse != null">
+                see_house,
+            </if>
+            <if test="mainFloor != null">
+                main_floor,
+            </if>
+            <if test="actualFloor != null">
+                actual_floor,
+            </if>
+            <if test="renovation != null">
+                renovation,
+            </if>
+            <if test="picUrl != null">
+                pic_url,
+            </if>
+            <if test="payWay != null">
+                pay_way,
+            </if>
+            <if test="leaseWay != null">
+                lease_way,
+            </if>
+            <if test="quality != null">
+                quality,
+            </if>
+            <if test="isdel != null">
+                isdel,
+            </if>
+            <if test="isBus != null">
+                is_bus,
+            </if>
+            <if test="isSubway != null">
+                is_subway,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="isFree != null">
+                is_free,
+            </if>
+            <if test="isPark != null">
+                is_park,
+            </if>
+            <if test="houseName != null">
+                house_name,
+            </if>
+            <if test="isMinprice != null">
+                is_minprice,
+            </if>
+            <if test="isMintotalprice != null">
+                is_mintotalprice,
+            </if>
+            <if test="isHome != null">
+                is_home,
+            </if>
+
+            <if test="deploy != null">
+                deploy,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="floors != null">
+                floors,
+            </if>
+            <if test="isRecommend != null">
+                is_recommend,
+            </if>
+            <if test="updateTime !=null and updateTime !=''">
+                update_time,
+            </if>
+            <if test="apartFilter !=null ">
+                apart_filter,
+            </if>
+            <if test="totalPriceFilter !=null ">
+                total_price_filter,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="area != null">
+                #{area,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=VARCHAR},
+            </if>
+            <if test="maxFloorarea != null">
+                #{maxFloorarea,jdbcType=VARCHAR},
+            </if>
+            <if test="minFloorarea != null">
+                #{minFloorarea,jdbcType=VARCHAR},
+            </if>
+            <if test="floorArea != null">
+                #{floorArea,jdbcType=VARCHAR},
+            </if>
+            <if test="contact != null">
+                #{contact,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="openTime != null">
+                #{openTime,jdbcType=DATE},
+            </if>
+            <if test="handTime != null">
+                #{handTime,jdbcType=DATE},
+            </if>
+            <if test="apart != null">
+                #{apart,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="tags != null">
+                #{tags,jdbcType=VARCHAR},
+            </if>
+            <if test="totalPrice != null">
+                #{totalPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="direction != null">
+                #{direction,jdbcType=VARCHAR},
+            </if>
+            <if test="houseYear != null">
+                #{houseYear,jdbcType=VARCHAR},
+            </if>
+            <if test="seeHouse != null">
+                #{seeHouse,jdbcType=VARCHAR},
+            </if>
+            <if test="mainFloor != null">
+                #{mainFloor,jdbcType=VARCHAR},
+            </if>
+            <if test="actualFloor != null">
+                #{actualFloor,jdbcType=VARCHAR},
+            </if>
+            <if test="renovation != null">
+                #{renovation,jdbcType=VARCHAR},
+            </if>
+            <if test="picUrl != null">
+                #{picUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="payWay != null">
+                #{payWay,jdbcType=VARCHAR},
+            </if>
+            <if test="leaseWay != null">
+                #{leaseWay,jdbcType=VARCHAR},
+            </if>
+            <if test="quality != null">
+                #{quality,jdbcType=VARCHAR},
+            </if>
+            <if test="isdel != null">
+                #{isdel,jdbcType=INTEGER},
+            </if>
+            <if test="isBus != null">
+                #{isBus,jdbcType=INTEGER},
+            </if>
+            <if test="isSubway != null">
+                #{isSubway,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isFree != null">
+                #{isFree,jdbcType=INTEGER},
+            </if>
+            <if test="isPark != null">
+                #{isPark,jdbcType=INTEGER},
+            </if>
+            <if test="houseName != null">
+                #{houseName,jdbcType=VARCHAR},
+            </if>
+            <if test="isMinprice != null">
+                #{isMinprice,jdbcType=INTEGER},
+            </if>
+            <if test="isMintotalprice != null">
+                #{isMintotalprice,jdbcType=INTEGER},
+            </if>
+            <if test="isHome != null">
+                #{isHome,jdbcType=INTEGER},
+            </if>
+
+            <if test="deploy != null">
+                #{deploy,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="floors != null">
+                #{floors,jdbcType=VARCHAR},
+            </if>
+            <if test="isRecommend != null">
+                #{isRecommend},
+            </if>
+            <if test="apartFilter !=null ">
+                #{apartFilter},
+            </if>
+            <if test="totalPriceFilter !=null ">
+                #{totalPriceFilter},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.w.entity.House">
+        update house
+        <set>
+            <if test="updateTime !=null and updateTime != ''">
+                update_time=#{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="area != null">
+                area = #{area,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=VARCHAR},
+            </if>
+            <if test="maxFloorarea != null">
+                max_floorarea = #{maxFloorarea,jdbcType=VARCHAR},
+            </if>
+            <if test="minFloorarea != null">
+                min_floorarea = #{minFloorarea,jdbcType=VARCHAR},
+            </if>
+            <if test="floorArea != null">
+                floor_area = #{floorArea,jdbcType=VARCHAR},
+            </if>
+            <if test="contact != null">
+                contact = #{contact,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="openTime != null">
+                open_time = #{openTime,jdbcType=DATE},
+            </if>
+            <if test="handTime != null">
+                hand_time = #{handTime,jdbcType=DATE},
+            </if>
+            <if test="apart != null">
+                apart = #{apart,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="tags != null">
+                tags = #{tags,jdbcType=VARCHAR},
+            </if>
+            <if test="totalPrice != null">
+                total_price = #{totalPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="direction != null">
+                direction = #{direction,jdbcType=VARCHAR},
+            </if>
+            <if test="houseYear != null">
+                house_year = #{houseYear,jdbcType=VARCHAR},
+            </if>
+            <if test="seeHouse != null">
+                see_house = #{seeHouse,jdbcType=VARCHAR},
+            </if>
+            <if test="mainFloor != null">
+                main_floor = #{mainFloor,jdbcType=VARCHAR},
+            </if>
+            <if test="actualFloor != null">
+                actual_floor = #{actualFloor,jdbcType=VARCHAR},
+            </if>
+            <if test="renovation != null">
+                renovation = #{renovation,jdbcType=VARCHAR},
+            </if>
+            <if test="picUrl != null">
+                pic_url = #{picUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="payWay != null">
+                pay_way = #{payWay,jdbcType=VARCHAR},
+            </if>
+            <if test="leaseWay != null">
+                lease_way = #{leaseWay,jdbcType=VARCHAR},
+            </if>
+            <if test="quality != null">
+                quality = #{quality,jdbcType=VARCHAR},
+            </if>
+            <if test="isdel != null">
+                isdel = #{isdel,jdbcType=INTEGER},
+            </if>
+            <if test="isBus != null">
+                is_bus = #{isBus,jdbcType=INTEGER},
+            </if>
+            <if test="isSubway != null">
+                is_subway = #{isSubway,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isFree != null">
+                is_free = #{isFree,jdbcType=INTEGER},
+            </if>
+            <if test="isPark != null">
+                is_park = #{isPark,jdbcType=INTEGER},
+            </if>
+            <if test="houseName != null">
+                house_name = #{houseName,jdbcType=VARCHAR},
+            </if>
+            <if test="isMinprice != null">
+                is_minprice = #{isMinprice,jdbcType=INTEGER},
+            </if>
+            <if test="isMintotalprice != null">
+                is_mintotalprice = #{isMintotalprice,jdbcType=INTEGER},
+            </if>
+            <if test="isHome != null">
+                is_home = #{isHome,jdbcType=INTEGER},
+            </if>
+            <if test="deploy != null">
+                deploy = #{deploy,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="floors != null">
+                floors = #{floors,jdbcType=VARCHAR},
+            </if>
+            <if test="isRecommend != null">
+                is_recommend=#{isRecommend},
+            </if>
+            <if test="apartFilter !=null">
+                apart_filter=#{apartFilter},
+            </if>
+            <if test="totalPriceFilter !=null">
+                total_price_filter=#{totalPriceFilter},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateIsdel" parameterType="com.w.entity.House">
+        update house set isdel=0 where id=#{id}
+    </update>
+    <select id="selectByType" resultType="java.util.Map">
+    select count(1) as total,house.type from house inner join r_house on house.id=r_house.house_id
+    where r_house.bus_id=#{busId} and house.isdel=1 group by house.type
+  </select>
+    <!--条件分页查询-->
+    <select id="houseList" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select * from house where isdel=1
+        <if test="queryDto.type !=null and queryDto.type !=''">
+            and type =#{queryDto.type}
+        </if>
+        <if test="queryDto.city !=null and queryDto.city !=''">
+            and city=#{queryDto.city}
+        </if>
+        <if test="queryDto.area !=null and queryDto.area !=''">
+            and area =#{queryDto.area}
+        </if>
+        <if test="queryDto.isRecommend != null and queryDto.isRecommend!=''">
+            and is_recommend=#{queryDto.isRecommend}
+        </if>
+        <if test="queryDto.houseName !=null and queryDto.houseName !=''">
+            and house_name like concat('%', #{queryDto.houseName},'%')
+        </if>
+
+        <if test="queryDto.deploy !=null and queryDto.deploy !=''">
+            and deploy like concat('%', #{queryDto.deploy},'%')
+        </if>
+
+        <if test="queryDto.state !=null and queryDto.state !=''">
+            and state =#{queryDto.state}
+        </if>
+        <if test="queryDto.apart !=null and queryDto.apart!=''">
+            and ( apart regexp #{queryDto.apart}
+            <if test="queryDto.apartFilter !=null">
+                or apart_filter <![CDATA[ >= ]]> #{queryDto.apartFilter}
+            </if>
+            )
+        </if>
+
+        <if test="queryDto.seeHouse !=null and queryDto.seeHouse !=''">
+            and see_house=#{queryDto.seeHouse}
+        </if>
+        <if test="queryDto.beginTime != null and queryDto.beginTime != '' ">
+            and open_time <![CDATA[ >= ]]> #{queryDto.beginTime}
+        </if>
+        <if test="queryDto.endTime != null and queryDto.endTime != '' ">
+            and open_time <![CDATA[ <= ]]> #{queryDto.endTime}
+        </if>
+        <!--/*查询单价范围*/-->
+        <if test="queryDto.priceScopes !=null ">
+            and (
+            <foreach collection="queryDto.priceScopes" separator="or" item="priceScope">
+                (price <![CDATA[ >= ]]>#{priceScope.minPrice} and price <![CDATA[ <= ]]> #{priceScope.maxPrice})
+            </foreach>
+            )
+        </if>
+        <!--/*查询总价范围*/-->
+        <if test="queryDto.totalPriceScopes != null ">
+            and(
+            <foreach collection="queryDto.totalPriceScopes" separator="or" item="totalPriceScope">
+                (total_price <![CDATA[ >= ]]>#{totalPriceScope.minTotalPrice} and total_price <![CDATA[ <= ]]>
+                #{totalPriceScope.maxTotalPrice})
+            </foreach>
+            )
+        </if>
+        <!-- /*查询单房面积范围*/-->
+        <if test="queryDto.areaScopes != null ">
+            and(
+            <foreach collection="queryDto.areaScopes" separator="or" item="areaScope">
+                (floor_area <![CDATA[ >= ]]>#{areaScope.minArea} and floor_area <![CDATA[ <= ]]> #{areaScope.maxArea})
+            </foreach>
+            )
+        </if>
+        <!-- <&#45;&#45;查询楼盘中面积范围&ndash;&gt;-->
+        <if test="queryDto.floorAreaScopes != null ">
+            and(
+            <foreach collection="queryDto.floorAreaScopes" separator="or" item="floorAreaScope">
+                (min_floorarea <![CDATA[ >= ]]>#{floorAreaScope.minFloorArea} and min_floorarea <![CDATA[ <= ]]>
+                #{floorAreaScope.maxFloorArea})
+            </foreach>
+            )
+        </if>
+        <if test="queryDto.renovation !=null and queryDto.renovation !=''  ">
+            and renovation=#{queryDto.renovation}
+        </if>
+        <if test="queryDto.direction !=null and  queryDto.direction !='' ">
+            and direction=#{queryDto.direction}
+        </if>
+        <if test="queryDto.payWay !=null and queryDto.payWay !='' ">
+            and pay_way=#{queryDto.payWay}
+        </if>
+        <if test="queryDto.leaseWay !=null and queryDto.leaseWay !='' ">
+            and lease_way=#{queryDto.leaseWay}
+        </if>
+        <if test="queryDto.quality !=null and queryDto.quality != '' ">
+            and quality=#{queryDto.quality}
+        </if>
+        <if test="queryDto.isBus !=null ">
+            and is_bus=#{queryDto.isBus}
+        </if>
+        <if test="queryDto.isMinprice !=null and queryDto.isMinprice !=''">
+            and is_minprice=#{queryDto.isMinprice}
+        </if>
+        <if test="queryDto.isMintotalprice !=null">
+            and is_mintotalprice=#{queryDto.isMintotalprice}
+        </if>
+        <if test="queryDto.isHome !=null">
+            and is_home=#{queryDto.isHome}
+        </if>
+        <if test="queryDto.floors !=null and queryDto.floors !=''">
+            and floors=#{queryDto.floors}
+        </if>
+        <if test="queryDto.sortKey !=null and queryDto.sortKey !=''">
+            order by ${queryDto.sortKey} ${queryDto.sortValue}
+        </if>
+    </select>
+    <!--查询经济人下边有多少房源-->
+    <select id="selectByAgent" resultMap="BaseResultMap">
+        select house.* from house inner join r_house on r_house.house_id=house.id
+        where r_house.agent_id=#{agentId} and house.isdel=1
+    </select>
+    <!--查询该房源下边有多少经济人-->
+    <select id="selectByHouse" resultMap="BaseResultMap">
+        select  house.* from house inner join r_house on r_house.house_id=house.id
+        inner join agent on agent.id=r_house.agent_id
+        where house.id=#{id}
+    </select>
+    <select id="selectByHouseId" resultMap="BaseResultMap">
+        select * from house where id=#{id} and isdel=1
+    </select>
+    <select id="selectByType1" resultType="java.lang.Integer">
+        select  count(distinct r_house.house_id) as total from house
+        inner join  r_house on house.id=r_house.house_id
+        where r_house.bus_id=#{busId} and house.type=1 AND house.isdel=1
+        group by house.type
+    </select>
+    <select id="selectByType2" resultType="java.lang.Integer">
+        select count(distinct r_house.house_id) as total from house
+        inner join  r_house on house.id=r_house.house_id
+        where r_house.bus_id=#{busId} and house.type= 2 AND house.isdel=1
+        group by house.type
+    </select>
+    <select id="selectByType3" resultType="java.lang.Integer">
+        select count(distinct r_house.house_id) as total  from house
+        inner join  r_house on house.id=r_house.house_id
+        where r_house.bus_id=#{busId} and house.type= 3 AND house.isdel=1
+        group by house.type
+    </select>
+
+    <!--该用户收藏了多少房源-->
+    <select id="selectByUser" resultMap="BaseResultMap">
+        select house.* from house inner join collect on collect.house_id=house.id
+        where collect.phone=#{phone} and collect.state=1 and house.isdel=1
+        <if test="type!=null and type !=''">
+            and house.type=#{type}
+        </if>
+        order by collect.follow_time desc
+    </select>
+
+    <!--查询推荐房源-->
+    <select id="selectByIsRecommend" resultMap="BaseResultMap">
+        select * from house where isdel=1
+        <if test="isRecommend !=null and isRecommend !=''">
+            and is_recommend=#{isRecommend}
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="testItem" resultMap="BaseResultMap">
+        select * from house where 1=1( and
+        <if test="item !=null and item!='' ">
+            ${item}
+        </if>
+        )
+    </select>
+
+    <select id="selectOrder" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT * FROM house WHERE
+        ORDER_ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findByCountType1" resultType="com.w.vo.ReturnHouse">
+    SELECT sum(a.browse_count) as record , b.* from house b ,history a where a.house_id=b.id and b.isdel=1 and b.city=#{city} and b.type=1 GROUP BY a.house_id ORDER BY record desc
+    </select>
+
+    <select id="findByCountType2" resultType="com.w.vo.ReturnHouse">
+    SELECT sum(a.browse_count) as record , b.* from house b ,history a where a.house_id=b.id and b.isdel=1 and b.type=2 and b.city=#{city} GROUP BY a.house_id ORDER BY record desc
+    </select>
+
+    <select id="findByCountType3" resultType="com.w.vo.ReturnHouse">
+    SELECT sum(a.browse_count) as record , b.* from house b ,history a where a.house_id=b.id and b.isdel=1 and b.type=3 and b.city=#{city} GROUP BY a.house_id ORDER BY record desc
+    </select>
+
+
+    <select id="queryByDescTest" resultType="com.w.vo.ReturnHouse">
+        select DISTINCT(a.house_id) as record,b.*  from r_house a,house b where a.house_id=b.id and a.bus_id=#{id} and b.type= #{type} and b.isdel=1 ORDER BY create_time desc
+    </select>
+
+
+    <!--查询用户关注经纪人的房源-->
+    <select id="selectByCollectAndAgent" resultMap="BaseResultMap">
+        select house.* from house inner join collect on collect.house_id=house.id
+	inner join r_house on r_house.house_id=collect.house_id
+        where collect.phone=#{phone} and house.isdel=1
+				and r_house.agent_id=#{agentId} and collect.bus_id=#{busId}
+				and collect.state=1
+    </select>
+
+</mapper>
